@@ -1,7 +1,10 @@
+"use client"
+
 import Link from "next/link"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight } from "lucide-react"
+import { useMemo } from "react"
 
 const regressions = [
   {
@@ -90,10 +93,38 @@ const regressions = [
   },
 ]
 
-export function RegressionGrid() {
+interface RegressionGridProps {
+  searchQuery?: string
+}
+
+export function RegressionGrid({ searchQuery = "" }: RegressionGridProps) {
+  const filteredRegressions = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return regressions
+    }
+
+    const query = searchQuery.toLowerCase()
+    return regressions.filter(
+      (regression) =>
+        regression.title.toLowerCase().includes(query) ||
+        regression.description.toLowerCase().includes(query) ||
+        regression.category.toLowerCase().includes(query) ||
+        regression.difficulty.toLowerCase().includes(query),
+    )
+  }, [searchQuery])
+
+  if (filteredRegressions.length === 0) {
+    return (
+      <div className="text-center py-16">
+        <p className="text-lg text-muted-foreground mb-2">No regression models found</p>
+        <p className="text-sm text-muted-foreground">Try adjusting your search query</p>
+      </div>
+    )
+  }
+
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {regressions.map((regression) => (
+      {filteredRegressions.map((regression) => (
         <Link key={regression.slug} href={`/regressions/${regression.slug}`}>
           <Card className="group h-full p-6 transition-all hover:border-primary hover:shadow-md">
             <div className="mb-4 flex items-center gap-2">

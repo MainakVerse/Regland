@@ -15,7 +15,7 @@ export async function getGitHubStats(): Promise<GitHubRepo | null> {
       description: "50 classic regression models explained as stories",
       stars: 1234,
       forks: 89,
-      url: "https://github.com/yourusername/regressions-reimagined",
+      url: "https://github.com/MainakVerse/Regland",
     }
   } catch (error) {
     console.error("Failed to fetch GitHub stats:", error)

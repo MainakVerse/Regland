@@ -1,9 +1,15 @@
+"use client"
+
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { RegressionGrid } from "@/components/regression-grid"
-import { RegressionFilters } from "@/components/regression-filters"
+import { Input } from "@/components/ui/input"
+import { Search } from "lucide-react"
+import { useState } from "react"
 
 export default function RegressionsPage() {
+  const [searchQuery, setSearchQuery] = useState("")
+
   return (
     <div className="min-h-screen">
       <SiteHeader />
@@ -18,14 +24,23 @@ export default function RegressionsPage() {
               Explore 50 regression models organized by category and difficulty. Each model includes a real-world
               problem, mathematical intuition, working code, and interactive visualizations.
             </p>
+
+            <div className="relative mt-8 max-w-2xl">
+              <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search regression models..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 h-12 text-base"
+              />
+            </div>
           </div>
         </section>
 
-        {/* Filters and Grid */}
         <section className="py-12">
           <div className="container mx-auto max-w-screen-xl px-4">
-            <RegressionFilters />
-            <RegressionGrid />
+            <RegressionGrid searchQuery={searchQuery} />
           </div>
         </section>
       </main>
